@@ -55,7 +55,7 @@ def handle_dialog(req, res):
         }
 
         res['response']['text'] = 'Ты играешь белыми, начинай'
-        res['response']['buttons'] = [ 'title' : 'е2е4', 'hide' : True ]
+        res['response']['buttons'] = [ {'title' : 'е2е4', 'hide' : True} ]
         return
 
     res['response']['text'] = 'e7e5'
