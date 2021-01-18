@@ -59,7 +59,7 @@ def handle_dialog(req, res):
         return
 
     res['response']['text'] = 'e7e5'
-    res['response']['buttons'] = 'f2f4'
+    res['response']['buttons'] = [ {'title' : 'g1f3', 'hide' : True} ]
 
 
 def parse_player_move(req):
