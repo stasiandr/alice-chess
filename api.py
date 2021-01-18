@@ -50,11 +50,9 @@ def handle_dialog(req, res):
         # Инициализируем сессию и поприветствуем его.
 
         sessionStorage[user_id] = {
-            'suggests': [
-                "Не хочу.",
-                "Не буду.",
-                "Отстань!",
-            ]
+            'suggests': [ 
+                'е2е4'
+             ]
         }
 
         res['response']['text'] = 'Привет! Купи слона!'
@@ -88,17 +86,11 @@ def get_suggests(user_id):
         for suggest in session['suggests'][:2]
     ]
 
-    # Убираем первую подсказку, чтобы подсказки менялись каждый раз.
-    session['suggests'] = session['suggests'][1:]
-    sessionStorage[user_id] = session
-
-    # Если осталась только одна подсказка, предлагаем подсказку
-    # со ссылкой на Яндекс.Маркет.
-    if len(suggests) < 2:
-        suggests.append({
-            "title": "Ладно",
-            "url": "https://market.yandex.ru/search?text=слон",
-            "hide": True
-        })
-
     return suggests
+
+
+def parse_player_move(req)
+    #parse will go here
+
+    return 'e2e4'
+
