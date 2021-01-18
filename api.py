@@ -84,3 +84,8 @@ def parse_player_move(req):
 
     return 'e2e4'
 
+
+
+
+if __name__ == "__main__":
+    app.run(ssl_context=('cert.pem', 'key.pem'))
