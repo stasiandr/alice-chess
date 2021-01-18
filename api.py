@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 # Импортируем модули для работы с JSON и логами.
 import json
 import logging
+from stockfish import Stockfish
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
@@ -15,6 +16,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Хранилище данных о сессиях.
 sessionStorage = {}
+
+# Initializing engine
+
+stockfish_parameters = {
+    "Write Debug Log": "true",
+    "Skill Level": 3,
+    "Slow Mover": 10,
+}
+
+stockfish = Stockfish("/usr/local/bin/stockfish", parameters=stockfish_parameters)
 
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
@@ -49,17 +60,23 @@ def handle_dialog(req, res):
         # Инициализируем сессию и поприветствуем его.
 
         sessionStorage[user_id] = {
-            'suggests': [ 
-                'е2е4'
-             ]
+            'moves' : []
         }
 
         res['response']['text'] = 'Ты играешь белыми, начинай'
         res['response']['buttons'] = [ {'title' : 'е2е4', 'hide' : True} ]
         return
 
-    res['response']['text'] = 'e7e5'
-    res['response']['buttons'] = [ {'title' : 'g1f3', 'hide' : True} ]
+    move = parse_player_move(req)
+
+    sessionStorage[user_id]['moves'].append(move)
+
+    stockfish.set_position(sessionStorage[user_id]['moves'])
+
+    alice_move = stockfish.get_best_move()
+
+    res['response']['text'] = alice_move
+    res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
 
 
 def parse_player_move(req):

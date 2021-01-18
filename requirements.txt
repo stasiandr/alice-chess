@@ -1,2 +1,2 @@
+stockfish>=3
 Flask==0.12.2
-pystockfish==1.0.1
