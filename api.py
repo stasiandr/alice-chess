@@ -18,7 +18,6 @@ sessionStorage = {}
 
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
-
 def main():
 # Функция получает тело запроса и возвращает ответ.
     logging.info('Request: %r', request.json)
@@ -63,7 +62,7 @@ def handle_dialog(req, res):
     res['response']['buttons'] = 'f2f4'
 
 
-def parse_player_move(req)
+def parse_player_move(req):
     #parse will go here
 
     return 'e2e4'
