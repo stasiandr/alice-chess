@@ -31,5 +31,4 @@ RUN pip install cryptography
 
 RUN python -m pip install -U pip
 RUN python -m pip install -r requirements.txt
-#CMD FLASK_APP=api.py flask run --host="::"
-CMD python api.py
+CMD FLASK_APP=api.py flask run --host="::"
