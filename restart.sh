@@ -11,3 +11,5 @@ docker stop nginx
 docker rm nginx
 docker build -t nginx ./nginx
 docker run -d -p 80:80 -p 443:443 --name nginx --net mynet -v /etc/letsencrypt:/etc/letsencrypt nginx
+
+docker ps

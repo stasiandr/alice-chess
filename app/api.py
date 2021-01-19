@@ -75,14 +75,22 @@ def handle_dialog(req, res):
         return
 
     if str(req['request']['original_utterance']).lower().startswith("зано"):
+
+        sessionStorage[user_id]['moves'] = []
         res['response']['text'] = "Чтоже, начнем новую партию"
-        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
+        res['response']['buttons'] = [{'title': 'e2e4', 'hide': True}]
     else:
         try:
             move = parse_player_move(req)
         except ParseMoveError as e:
             res['response']['text'] = "Не поняла какой ход вы имели ввиду, попробуйте еще раз"
             res['response']['buttons'] = []
+            return
+
+        stockfish.set_position(sessionStorage[user_id]['moves'])
+        if stockfish.is_move_correct(move):
+            res['response']['text'] = "К сожалению, этот ход нельзя сделать"
+            res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
             return
 
         sessionStorage[user_id]['moves'].append(move)
@@ -92,7 +100,7 @@ def handle_dialog(req, res):
         sessionStorage[user_id]['moves'].append(alice_move)
         stockfish.set_position(sessionStorage[user_id]['moves'])
 
-        res['response']['text'] = alice_move
+        res['response']['text'] = alice_move + " " + str(stockfish.get_evaluation())
         res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
 
 
