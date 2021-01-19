@@ -9,7 +9,10 @@ from stockfish import Stockfish
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 
 logging.basicConfig(level=logging.DEBUG)
