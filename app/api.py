@@ -8,6 +8,9 @@ import logging
 from stockfish import Stockfish
 import sys
 
+from lib import InvalidMove, ParseMoveError, parse_player_move
+import re
+
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
 from flask_cors import CORS
@@ -68,30 +71,30 @@ def handle_dialog(req, res):
         }
 
         res['response']['text'] = 'Ты играешь белыми, начинай'
-        res['response']['buttons'] = [ {'title' : 'е2е4', 'hide' : True} ]
+        res['response']['buttons'] = [ {'title' : 'e2e4', 'hide' : True} ]
         return
 
-    move = parse_player_move(req)
-    sessionStorage[user_id]['moves'].append(move)
-    stockfish.set_position(sessionStorage[user_id]['moves'])
-    alice_move = stockfish.get_best_move()
+    if req.lower().startswith("зано"):
+        res['response']['text'] = "Чтоже, начнем новую партию"
+        res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
+    else
+        try:
+            move = parse_player_move(req)
+        except ParseMoveError as e:
+            res['response']['text'] = "Не поняла какой ход вы имели ввиду, попробуйте еще раз"
+            res['response']['buttons'] = []
+            return
 
-    print(sessionStorage[user_id]['moves'], file=sys.stdout)
+        sessionStorage[user_id]['moves'].append(move)
+        stockfish.set_position(sessionStorage[user_id]['moves'])
+        alice_move = stockfish.get_best_move()
 
-    sessionStorage[user_id]['moves'].append(alice_move)
-    # stockfish.set_position(sessionStorage[user_id]['moves'])
+        sessionStorage[user_id]['moves'].append(alice_move)
+        stockfish.set_position(sessionStorage[user_id]['moves'])
 
+        res['response']['text'] = alice_move
+        res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
 
-    # print(sessionStorage[user_id]['moves'], file=sys.stdout)
-
-    res['response']['text'] = alice_move
-#    res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
-
-
-def parse_player_move(req):
-    #parse will go here
-
-    return req['request']['original_utterance']
 
 
 
