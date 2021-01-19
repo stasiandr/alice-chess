@@ -22,4 +22,8 @@ class Test(TestCase):
         for in_, out_ in [('Аш 7 Аш 5', 'h7h5')]:
             self.assertEqual(test_adapter(in_), out_)
 
+    def text_new(self):
+        for in_, out_ in [('Аш 7 Аш 5', 'h7h5')]:
+            self.assertEqual(test)
+
 

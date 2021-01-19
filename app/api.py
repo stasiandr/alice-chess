@@ -8,8 +8,7 @@ import logging
 from stockfish import Stockfish
 import sys
 
-from lib import InvalidMove, ParseMoveError, parse_player_move
-import re
+from .lib import InvalidMove, ParseMoveError, parse_player_move
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
@@ -17,7 +16,6 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
-
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -34,10 +32,11 @@ stockfish_parameters = {
 
 stockfish = Stockfish("/usr/local/bin/stockfish", parameters=stockfish_parameters)
 
+
 # Задаем параметры приложения Flask.
 @app.route("/", methods=['POST'])
 def main():
-# Функция получает тело запроса и возвращает ответ.
+    # Функция получает тело запроса и возвращает ответ.
     logging.info('Request: %r', request.json)
 
     response = {
@@ -58,6 +57,7 @@ def main():
         indent=2
     )
 
+
 # Функция для непосредственной обработки диалога.
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
@@ -67,16 +67,16 @@ def handle_dialog(req, res):
         # Инициализируем сессию и поприветствуем его.
 
         sessionStorage[user_id] = {
-            'moves' : []
+            'moves': []
         }
 
         res['response']['text'] = 'Ты играешь белыми, начинай'
-        res['response']['buttons'] = [ {'title' : 'e2e4', 'hide' : True} ]
+        res['response']['buttons'] = [{'title': 'e2e4', 'hide': True}]
         return
 
-    if req.lower().startswith("зано"):
+    if str(req['request']['original_utterance']).lower().startswith("зано"):
         res['response']['text'] = "Чтоже, начнем новую партию"
-        res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
     else:
         try:
             move = parse_player_move(req)
@@ -93,7 +93,7 @@ def handle_dialog(req, res):
         stockfish.set_position(sessionStorage[user_id]['moves'])
 
         res['response']['text'] = alice_move
-        res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
 
 
 if __name__ == "__main__":
