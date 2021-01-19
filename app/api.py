@@ -74,8 +74,14 @@ def handle_dialog(req, res):
     sessionStorage[user_id]['moves'].append(move)
     stockfish.set_position(sessionStorage[user_id]['moves'])
     alice_move = stockfish.get_best_move()
+
+    print(sessionStorage[user_id]['moves'])
+
     sessionStorage[user_id]['moves'].append(alice_move)
     stockfish.set_position(sessionStorage[user_id]['moves'])
+
+
+    print(sessionStorage[user_id]['moves'])
 
     res['response']['text'] = alice_move
     res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
