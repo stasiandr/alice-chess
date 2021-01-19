@@ -1,4 +1,4 @@
 FROM nginx:1.17-alpine
-
-RUN rm /etc/nginx/conf.d/default.conf
+ADD /etc/letsencrypt/live/stas.dtransform.online 
+RUN rm /etc/nginx/conf.d/default.conf /var/www/cert
 COPY nginx.conf /etc/nginx/conf.d
