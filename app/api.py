@@ -85,7 +85,7 @@ def handle_dialog(req, res):
 def parse_player_move(req):
     #parse will go here
 
-    return 'e2e4'
+    return req['request']['original_utterance']
 
 
 
