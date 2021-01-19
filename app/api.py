@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 import json
 import logging
 from stockfish import Stockfish
+import sys
 
 # Импортируем подмодули Flask для запуска веб-сервиса.
 from flask import Flask, request
@@ -75,13 +76,13 @@ def handle_dialog(req, res):
     stockfish.set_position(sessionStorage[user_id]['moves'])
     alice_move = stockfish.get_best_move()
 
-    print(sessionStorage[user_id]['moves'])
+    print(sessionStorage[user_id]['moves'], file=sys.stdout)
 
     sessionStorage[user_id]['moves'].append(alice_move)
     stockfish.set_position(sessionStorage[user_id]['moves'])
 
 
-    print(sessionStorage[user_id]['moves'])
+    print(sessionStorage[user_id]['moves'], file=sys.stdout)
 
     res['response']['text'] = alice_move
     res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
