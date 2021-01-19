@@ -8,4 +8,4 @@ docker run -dp 5000:5000 --name app app
 docker stop nginx
 docker rm nginx
 docker build -t nginx ./nginx
-docker run -dp 80:80 --name nginx nginx -v /var/www/cert:/var/www/cert
+docker run -dp 80:80 --name nginx -v /var/www/cert:/var/www/cert nginx
