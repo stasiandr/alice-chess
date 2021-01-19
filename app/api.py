@@ -79,13 +79,13 @@ def handle_dialog(req, res):
     print(sessionStorage[user_id]['moves'], file=sys.stdout)
 
     sessionStorage[user_id]['moves'].append(alice_move)
-    stockfish.set_position(sessionStorage[user_id]['moves'])
+    # stockfish.set_position(sessionStorage[user_id]['moves'])
 
 
-    print(sessionStorage[user_id]['moves'], file=sys.stdout)
+    # print(sessionStorage[user_id]['moves'], file=sys.stdout)
 
     res['response']['text'] = alice_move
-    res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
+#    res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
 
 
 def parse_player_move(req):
