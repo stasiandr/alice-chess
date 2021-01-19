@@ -82,14 +82,16 @@ def handle_dialog(req, res):
     elif 'отмени' in req['request']['nlu']['tokens']:
         rejected_moves = sessionStorage[user_id]['moves'][-2:]
         sessionStorage[user_id]['moves'] = sessionStorage[user_id]['moves'][:-2]
+        stockfish.set_position(sessionStorage[user_id]['moves'])
+
         res['response']['text'] = "Отменяю свой ход " + rejected_moves[1] + ' и ваш ход ' + rejected_moves[0]
-        res['response']['buttons'] = [{'title': 'e2e4', 'hide': True}]
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
     else:
         try:
             move = parse_player_move(req)
         except ParseMoveError as e:
             res['response']['text'] = "Не поняла какой ход вы имели ввиду, попробуйте еще раз"
-            res['response']['buttons'] = []
+            res['response']['buttons'] = [{'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
             return
 
         stockfish.set_position(sessionStorage[user_id]['moves'])
@@ -105,8 +107,8 @@ def handle_dialog(req, res):
         sessionStorage[user_id]['moves'].append(alice_move)
         stockfish.set_position(sessionStorage[user_id]['moves'])
 
-        res['response']['text'] = alice_move + " " + str(stockfish.get_evaluation())
-        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
+        res['response']['text'] = alice_move # + " " + str(stockfish.get_evaluation())
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
 
 
 if __name__ == "__main__":
