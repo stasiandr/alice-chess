@@ -93,7 +93,7 @@ def handle_dialog(req, res):
             return
 
         stockfish.set_position(sessionStorage[user_id]['moves'])
-        if stockfish.is_move_correct(move):
+        if not stockfish.is_move_correct(move):
             res['response']['text'] = "К сожалению, этот ход нельзя сделать"
             res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
             return
