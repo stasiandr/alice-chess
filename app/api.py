@@ -77,7 +77,7 @@ def handle_dialog(req, res):
     if req.lower().startswith("зано"):
         res['response']['text'] = "Чтоже, начнем новую партию"
         res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
-    else
+    else:
         try:
             move = parse_player_move(req)
         except ParseMoveError as e:
@@ -94,9 +94,6 @@ def handle_dialog(req, res):
 
         res['response']['text'] = alice_move
         res['response']['buttons'] = [ {'title' : stockfish.get_best_move(), 'hide' : True} ]
-
-
-
 
 
 if __name__ == "__main__":
