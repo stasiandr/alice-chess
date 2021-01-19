@@ -75,9 +75,14 @@ def handle_dialog(req, res):
         return
 
     if str(req['request']['original_utterance']).lower().startswith("зано"):
-
         sessionStorage[user_id]['moves'] = []
         res['response']['text'] = "Чтоже, начнем новую партию"
+        res['response']['buttons'] = [{'title': 'e2e4', 'hide': True}]
+
+    elif 'отмени' in req['request']['nlu']['tokens']:
+        rejected_moves = sessionStorage[user_id]['moves'][-2:]
+        sessionStorage[user_id]['moves'] = sessionStorage[user_id]['moves'][:-2]
+        res['response']['text'] = "Отменяю свой ход " + rejected_moves[1] + ' и ваш ход ' + rejected_moves[0]
         res['response']['buttons'] = [{'title': 'e2e4', 'hide': True}]
     else:
         try:
