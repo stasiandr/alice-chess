@@ -85,7 +85,7 @@ def handle_dialog(req, res):
         stockfish.set_position(sessionStorage[user_id]['moves'])
 
         res['response']['text'] = "Отменяю свой ход " + rejected_moves[1] + ' и ваш ход ' + rejected_moves[0]
-        res['response']['buttons'] = [{'title': stockfish.get_best_move_time(2000), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
     else:
         try:
             move = parse_player_move(req)
@@ -97,18 +97,18 @@ def handle_dialog(req, res):
         stockfish.set_position(sessionStorage[user_id]['moves'])
         if not stockfish.is_move_correct(move):
             res['response']['text'] = "К сожалению, этот ход нельзя сделать"
-            res['response']['buttons'] = [{'title': stockfish.get_best_move_time(2000), 'hide': True}]
+            res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}]
             return
 
         sessionStorage[user_id]['moves'].append(move)
         stockfish.set_position(sessionStorage[user_id]['moves'])
-        alice_move = stockfish.get_best_move_time(2000)
+        alice_move = stockfish.get_best_move()
 
         sessionStorage[user_id]['moves'].append(alice_move)
         stockfish.set_position(sessionStorage[user_id]['moves'])
 
         res['response']['text'] = alice_move # + " " + str(stockfish.get_evaluation())
-        res['response']['buttons'] = [{'title': stockfish.get_best_move_time(2000), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
+        res['response']['buttons'] = [{'title': stockfish.get_best_move(), 'hide': True}, {'title': 'Отмени', 'hide': True}, {'title': 'Заново', 'hide': True}]
 
 
 if __name__ == "__main__":
